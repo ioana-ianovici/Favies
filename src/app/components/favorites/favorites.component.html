@@ -1,0 +1,40 @@
+<div class="description-area">
+    <p *ngIf="!isLoaded">
+        Loading...
+    </p>
+    <p *ngIf="isError">
+        A network error occured.
+    </p>
+    <p *ngIf="isLoaded && !isError && !favorites?.list?.entries?.length">
+        There are no favorite items.
+    </p>
+    <p *ngIf="isLoaded && !isError && !favoriteItems?.length">
+        There are favorite cards for this user, but they do not have a title specified.
+        Please consider displaying the name instead by using the checkbox below.
+    </p>
+    <p *ngIf="isLoaded && favoriteItems?.length">
+        Here are the user's favorite files and folders:
+    </p>
+</div>
+    
+<div class="row" *ngIf="isLoaded">
+    <ng-container *ngFor="let item of favoriteItems">
+        <mat-card class="col-xs-12 col-sm-4 offset-sm-4">
+            <mat-card-header>
+                <mat-card-title>
+                    <i *ngIf="item.isFile || item.isFolder"
+                        class="material-icons icon-title">
+                        {{item.isFile ? 'insert_drive_file' : 'folder'}}
+                    </i>
+                    <span>
+                        {{item.title}}
+                    </span>
+                </mat-card-title>
+            </mat-card-header>
+        </mat-card>
+    </ng-container>
+</div>
+    
+<mat-checkbox *ngIf="isLoaded && !isError" class="display-name" [(ngModel)]="displayNameWhenNoTitle">
+    Display the names for the files and folders that have no title
+</mat-checkbox>
